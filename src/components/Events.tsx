@@ -95,6 +95,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => (
             {event.venue.display_location}
           </Text>
         </Box>
+
         <Text fontSize="sm" fontWeight="bold" color="gray.600" justifySelf={"end"}>
           {formatDateTime(new Date(event.datetime_local), event.venue.timezone)}
         </Text>
