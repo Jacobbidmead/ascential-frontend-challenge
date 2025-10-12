@@ -4,8 +4,7 @@ export function formatDateTime(timestamp: Date, timeZone?: string) {
     month: "long",
     day: "numeric",
     hour: "numeric",
-    minute: "numeric",
-    second: "numeric",
+    minute: "2-digit",
     timeZone: timeZone,
     timeZoneName: "short",
   }).format(new Date(timestamp));
