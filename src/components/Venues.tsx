@@ -1,9 +1,22 @@
-import React from 'react';
-import { SimpleGrid, Flex, Spinner, Heading, Text, Box, Badge, LinkBox, LinkOverlay } from '@chakra-ui/react';
-import { Link as BrowserLink } from 'react-router-dom';
-import { useSeatGeek } from '../utils/useSeatGeek';
-import Error from './Error';
-import Breadcrumbs from './Breadcrumbs';
+import React, { useContext } from "react";
+import { FavouritesContext } from "../context/context";
+import { FavouriteItem, FavouritesContextType } from "../types/types";
+import {
+  SimpleGrid,
+  Flex,
+  Spinner,
+  Heading,
+  Text,
+  Box,
+  Badge,
+  LinkBox,
+  LinkOverlay,
+  Button,
+} from "@chakra-ui/react";
+import { Link as BrowserLink } from "react-router-dom";
+import { useSeatGeek } from "../utils/useSeatGeek";
+import Error from "./Error";
+import Breadcrumbs from "./Breadcrumbs";
 
 export interface VenueProps {
   id: number;
@@ -13,14 +26,31 @@ export interface VenueProps {
   display_location: string;
 }
 
-interface VenuItemProps {
+interface VenueItemProps {
   venue: VenueProps;
+  addFavourite: FavouritesContextType["addFavourite"];
+  removeFavourite: FavouritesContextType["removeFavourite"];
+}
+
+interface ContextProp {
+  favourites: FavouritesContextType;
 }
 
 const Venues: React.FC = () => {
-  const { data, error } = useSeatGeek('/venues', { 
-    sort: 'score.desc',
-    per_page: '24',
+  const context = useContext(FavouritesContext);
+
+  if (!context) {
+    return <div>Unabl to add favourite</div>;
+  }
+  const { addFavourite, removeFavourite } = context;
+
+  // if (!context) {
+  //   throw new Error:("SomeComponent must be used within FavoritesProvider");
+  // }
+
+  const { data, error } = useSeatGeek("/venues", {
+    sort: "score.desc",
+    per_page: "24",
   });
 
   if (error) return <Error />;
@@ -30,42 +60,59 @@ const Venues: React.FC = () => {
       <Flex justifyContent="center" alignItems="center" minHeight="50vh">
         <Spinner size="lg" />
       </Flex>
-    )
+    );
   }
 
   return (
     <>
-      <Breadcrumbs items={[{ label: 'Home', to: '/' }, { label: 'Venues' }]} />
+      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Venues" }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.venues?.map((venue: VenueProps) => (
-          <VenueItem key={venue.id.toString()} venue={venue} />
+          <VenueItem
+            key={venue.id.toString()}
+            venue={venue}
+            addFavourite={addFavourite}
+            removeFavourite={removeFavourite}
+          />
         ))}
       </SimpleGrid>
     </>
   );
 };
 
-const VenueItem: React.FC<VenuItemProps> = ({ venue }) => (
+const VenueItem: React.FC<VenueItemProps> = ({ venue, addFavourite, removeFavourite }) => (
   <LinkBox>
-    <Box        
+    <Box
       p={[4, 6]}
       bg="gray.50"
       borderColor="gray.200"
       borderWidth="1px"
-      justifyContent="center" 
+      justifyContent="center"
       alignContent="center"
       rounded="lg"
-      _hover={{ bg: 'gray.100' }}
-    >
-      <Badge colorScheme={venue.has_upcoming_events ? 'green' : 'red'} mb="2">
-        {`${venue.has_upcoming_events ? venue.num_upcoming_events : 'No'} Upcoming Events`}
+      _hover={{ bg: "gray.100" }}>
+      <Badge colorScheme={venue.has_upcoming_events ? "green" : "red"} mb="2">
+        {`${venue.has_upcoming_events ? venue.num_upcoming_events : "No"} Upcoming Events`}
       </Badge>
-      <Heading size='sm' noOfLines={1}>
+      <Heading size="sm" noOfLines={1}>
         <LinkOverlay as={BrowserLink} to={`/venues/${venue.id}`}>
           {venue.name_v2}
         </LinkOverlay>
       </Heading>
-      <Text fontSize="sm" color="gray.500">{venue.display_location}</Text>
+      <Text fontSize="sm" color="gray.500">
+        {venue.display_location}
+      </Text>
+      <Button
+        onClick={() =>
+          addFavourite({
+            id: venue.id.toString(),
+            type: "venue",
+            title: venue.name_v2,
+          })
+        }>
+        Favourite
+      </Button>
+      <Button onClick={() => removeFavourite(venue.id.toString())}>remove</Button>
     </Box>
   </LinkBox>
 );
