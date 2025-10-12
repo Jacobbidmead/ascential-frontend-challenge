@@ -7,10 +7,21 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
   const [favourites, setFavourites] = useState<FavouriteItem[]>([]);
   console.log(favourites);
 
-  const addFavourite = (item: FavouriteItem) => {
-    setFavourites((prev) => [...prev, item]);
+  const isFavourite = (favourites: FavouriteItem[], item: FavouriteItem) => {
+    return favourites.some((prev) => prev.id === item.id);
   };
 
+  const addFavourite = (item: FavouriteItem) => {
+    setFavourites((prev) => {
+      if (isFavourite(prev, item)) {
+        return prev;
+      } else {
+        return [...prev, item];
+      }
+    });
+  };
+
+  // create new array with elements that arent equal to the current elements id
   const removeFavourite = (idToRemove: string) => {
     setFavourites((prev) => prev.filter((item) => item.id !== idToRemove));
   };
