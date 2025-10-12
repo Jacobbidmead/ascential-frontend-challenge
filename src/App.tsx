@@ -1,15 +1,17 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Home from './components/Home';
-import Venues from './components/Venues';
-import Venue from './components/Venue';
-import Events from './components/Events';
-import Event from './components/Event';
-import { Flex, Heading } from '@chakra-ui/react';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import Venues from "./components/Venues";
+import Venue from "./components/Venue";
+import Events from "./components/Events";
+import Event from "./components/Event";
+import Drawer from "./components/Drawer";
+import { Flex, Heading } from "@chakra-ui/react";
 
 const App: React.FC = () => (
   <Router>
     <Nav />
+    <Drawer />
     <Routes>
       <Route path="/" Component={Home} />
       <Route path="/venues" Component={Venues} />
@@ -21,12 +23,7 @@ const App: React.FC = () => (
 );
 
 const Nav: React.FC = () => (
-  <Flex
-    as="nav"
-    bg="gray.700"
-    color="white"
-    padding="24px"
-  >
+  <Flex as="nav" bg="gray.700" color="white" padding="24px">
     <Heading size="md">Ascential Front End Challenge</Heading>
   </Flex>
 );
