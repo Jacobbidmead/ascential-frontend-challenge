@@ -7,19 +7,22 @@ import Events from "./components/Events";
 import Event from "./components/Event";
 import Drawer from "./components/Drawer";
 import { Flex, Heading } from "@chakra-ui/react";
+import { FavouritesProvider } from "./context/context";
 
 const App: React.FC = () => (
-  <Router>
-    <Nav />
-    <Drawer />
-    <Routes>
-      <Route path="/" Component={Home} />
-      <Route path="/venues" Component={Venues} />
-      <Route path="/venues/:venueId" Component={Venue} />
-      <Route path="/events" Component={Events} />
-      <Route path="/events/:eventId" Component={Event} />
-    </Routes>
-  </Router>
+  <FavouritesProvider>
+    <Router>
+      <Nav />
+      <Drawer />
+      <Routes>
+        <Route path="/" Component={Home} />
+        <Route path="/venues" Component={Venues} />
+        <Route path="/venues/:venueId" Component={Venue} />
+        <Route path="/events" Component={Events} />
+        <Route path="/events/:eventId" Component={Event} />
+      </Routes>
+    </Router>
+  </FavouritesProvider>
 );
 
 const Nav: React.FC = () => (
