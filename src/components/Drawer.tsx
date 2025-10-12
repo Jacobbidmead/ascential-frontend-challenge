@@ -1,3 +1,6 @@
+import React, { useContext } from "react";
+import { FavouritesContext } from "../context/context";
+
 import {
   Drawer,
   DrawerBody,
@@ -12,7 +15,13 @@ import {
 
 const SideDrawer = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const context = useContext(FavouritesContext);
 
+  if (!context) {
+    return <div>Unabl to add favourite</div>;
+  }
+  const { favourites } = context;
+  // sort columns by type
   return (
     <>
       <Button onClick={onOpen}>Open Drawer</Button>
@@ -21,16 +30,13 @@ const SideDrawer = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Drawer Title</DrawerHeader>
-          <DrawerBody>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</DrawerBody>
-          <DrawerFooter>
-            <Button variant="outline" onClick={onClose}>
-              Cancel
-            </Button>
-            <Button colorScheme="blue" ml={3}>
-              Save
-            </Button>
-          </DrawerFooter>
+          <DrawerHeader>Favourites</DrawerHeader>
+          {favourites.map((favourite) => (
+            <>
+              <div>{favourite.title}</div>
+            </>
+          ))}
+          <DrawerFooter></DrawerFooter>
         </DrawerContent>
       </Drawer>
     </>

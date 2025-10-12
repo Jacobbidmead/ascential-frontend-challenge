@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { FavouritesContext } from "../context/context";
-import { FavouriteItem, FavouritesContextType } from "../types/types";
+import { FavouritesContextType } from "../types/types";
 import {
   SimpleGrid,
   Flex,
@@ -32,21 +32,13 @@ interface VenueItemProps {
   removeFavourite: FavouritesContextType["removeFavourite"];
 }
 
-interface ContextProp {
-  favourites: FavouritesContextType;
-}
-
 const Venues: React.FC = () => {
   const context = useContext(FavouritesContext);
 
   if (!context) {
-    return <div>Unabl to add favourite</div>;
+    return <div>Unable to add favourite</div>;
   }
   const { addFavourite, removeFavourite } = context;
-
-  // if (!context) {
-  //   throw new Error:("SomeComponent must be used within FavoritesProvider");
-  // }
 
   const { data, error } = useSeatGeek("/venues", {
     sort: "score.desc",
