@@ -5,7 +5,11 @@ import { FavouritesContextType, FavouriteItem } from "../types/types";
 export const FavouritesContext = createContext<FavouritesContextType | undefined>(undefined);
 
 export function FavouritesProvider({ children }: { children: React.ReactNode }) {
-  const [favourites, setFavourites] = useState<FavouriteItem[]>([]);
+  const [favourites, setFavourites] = useState<FavouriteItem[]>(() => {
+    const saved = localStorage.getItem("favourites");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const toast = useToast();
 
   const isFavourite = (favourites: FavouriteItem[], item: FavouriteItem) => {
@@ -21,7 +25,7 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
           status: "info",
           duration: 3000,
           isClosable: true,
-          position: "top-right",
+          position: "bottom-left",
         });
         return prev;
       }
@@ -32,7 +36,7 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
         status: "success",
         duration: 3000,
         isClosable: true,
-        position: "top-right",
+        position: "bottom-left",
       });
 
       return [...prev, item];
@@ -50,7 +54,7 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
           status: "warning",
           duration: 3000,
           isClosable: true,
-          position: "top-right",
+          position: "bottom-left",
         });
       } else {
         toast({
@@ -59,7 +63,7 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
           status: "error",
           duration: 3000,
           isClosable: true,
-          position: "top-right",
+          position: "bottom-left",
         });
       }
 

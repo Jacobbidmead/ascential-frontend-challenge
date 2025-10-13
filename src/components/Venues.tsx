@@ -13,6 +13,7 @@ import {
   LinkOverlay,
   Button,
 } from "@chakra-ui/react";
+import { buildFavourite } from "../utils/favourites";
 import { Link as BrowserLink } from "react-router-dom";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import Error from "./Error";
@@ -94,17 +95,10 @@ const VenueItem: React.FC<VenueItemProps> = ({ venue, addFavourite, removeFavour
       <Text fontSize="sm" color="gray.500">
         {venue.display_location}
       </Text>
-      <Button
-        onClick={() =>
-          addFavourite({
-            id: venue.id.toString(),
-            type: "venue",
-            title: venue.name_v2,
-          })
-        }>
+      <Button onClick={() => addFavourite(buildFavourite("venue", venue.id, venue.name_v2))}>
         Favourite
       </Button>
-      <Button onClick={() => removeFavourite(venue.id.toString())}>remove</Button>
+      <Button onClick={() => removeFavourite(venue.id.toString())}>Remove</Button>
     </Box>
   </LinkBox>
 );
