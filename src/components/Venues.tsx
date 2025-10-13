@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
-import { FavouritesContext } from "../context/context";
-import { FavouritesContextType } from "../types/types";
+import React from "react";
+
 import {
   SimpleGrid,
   Flex,
@@ -11,13 +10,13 @@ import {
   Badge,
   LinkBox,
   LinkOverlay,
-  Button,
 } from "@chakra-ui/react";
-import { buildFavourite } from "../utils/favourites";
+
 import { Link as BrowserLink } from "react-router-dom";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import Error from "./Error";
 import Breadcrumbs from "./Breadcrumbs";
+import FavouritesButton from "./FavouritesButton";
 
 export interface VenueProps {
   id: number;
@@ -29,18 +28,9 @@ export interface VenueProps {
 
 interface VenueItemProps {
   venue: VenueProps;
-  addFavourite: FavouritesContextType["addFavourite"];
-  removeFavourite: FavouritesContextType["removeFavourite"];
 }
 
 const Venues: React.FC = () => {
-  const context = useContext(FavouritesContext);
-
-  if (!context) {
-    return <div>Unable to add favourite</div>;
-  }
-  const { addFavourite, removeFavourite } = context;
-
   const { data, error } = useSeatGeek("/venues", {
     sort: "score.desc",
     per_page: "24",
@@ -61,19 +51,14 @@ const Venues: React.FC = () => {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Venues" }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.venues?.map((venue: VenueProps) => (
-          <VenueItem
-            key={venue.id.toString()}
-            venue={venue}
-            addFavourite={addFavourite}
-            removeFavourite={removeFavourite}
-          />
+          <VenueItem key={venue.id.toString()} venue={venue} />
         ))}
       </SimpleGrid>
     </>
   );
 };
 
-const VenueItem: React.FC<VenueItemProps> = ({ venue, addFavourite, removeFavourite }) => (
+const VenueItem: React.FC<VenueItemProps> = ({ venue }) => (
   <LinkBox>
     <Box
       p={[4, 6]}
@@ -95,10 +80,9 @@ const VenueItem: React.FC<VenueItemProps> = ({ venue, addFavourite, removeFavour
       <Text fontSize="sm" color="gray.500">
         {venue.display_location}
       </Text>
-      <Button onClick={() => addFavourite(buildFavourite("venue", venue.id, venue.name_v2))}>
-        Favourite
-      </Button>
-      <Button onClick={() => removeFavourite(venue.id.toString())}>Remove</Button>
+      <Flex justify="flex-end">
+        <FavouritesButton id={venue.id} title={venue.name_v2} type="venue" />
+      </Flex>
     </Box>
   </LinkBox>
 );

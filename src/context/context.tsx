@@ -76,7 +76,13 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
   }, [favourites]);
 
   return (
-    <FavouritesContext.Provider value={{ favourites, addFavourite, removeFavourite }}>
+    <FavouritesContext.Provider
+      value={{
+        favourites,
+        addFavourite,
+        removeFavourite,
+        isFavourite: (item: FavouriteItem) => isFavourite(favourites, item),
+      }}>
       {children}
     </FavouritesContext.Provider>
   );
