@@ -15,6 +15,7 @@ import {
   Tooltip,
 } from "@chakra-ui/react";
 import Breadcrumbs from "./Breadcrumbs";
+import FavouritesButton from "./FavouritesButton";
 import Error from "./Error";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import { formatDateTime } from "../utils/formatDateTime";
@@ -53,8 +54,9 @@ const Event: React.FC = () => {
           { label: event.short_title },
         ]}
       />
-      <Flex bgColor="gray.200" p={[4, 6]}>
+      <Flex bgColor="gray.200" p={[4, 6]} justify="space-between">
         <Heading>{event.short_title}</Heading>
+        <FavouritesButton id={event.id} title={event.short_title} type={"event"} />
       </Flex>
       <EventInfo event={event} />
     </>

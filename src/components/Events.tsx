@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
+import FavouritesButton from "./FavouritesButton";
 import Error from "./Error";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import { formatDateTime } from "../utils/formatDateTime";
@@ -48,6 +49,7 @@ const Events: React.FC = () => {
     sort: "score.desc",
     per_page: "24",
   });
+  console.log("SeatGeek data:", data);
 
   if (error) return <Error />;
 
@@ -86,6 +88,7 @@ const EventItem: React.FC<EventItemProps> = ({ event }) => (
           <LinkOverlay as={Link} to={`/events/${event.id}`}>
             {event.short_title}
           </LinkOverlay>
+          <FavouritesButton id={event.id} title={event.short_title} type={"event"} />
         </Heading>
         <Box>
           <Text fontSize="sm" color="gray.600">
