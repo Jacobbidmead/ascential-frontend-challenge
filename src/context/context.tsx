@@ -1,11 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect } from "react";
+import { useToast } from "@chakra-ui/react";
 import { FavouritesContextType, FavouriteItem } from "../types/types";
 
 export const FavouritesContext = createContext<FavouritesContextType | undefined>(undefined);
 
 export function FavouritesProvider({ children }: { children: React.ReactNode }) {
   const [favourites, setFavourites] = useState<FavouriteItem[]>([]);
-  console.log(favourites);
+  const toast = useToast();
 
   const isFavourite = (favourites: FavouriteItem[], item: FavouriteItem) => {
     return favourites.some((prev) => prev.id === item.id);
@@ -14,16 +15,56 @@ export function FavouritesProvider({ children }: { children: React.ReactNode }) 
   const addFavourite = (item: FavouriteItem) => {
     setFavourites((prev) => {
       if (isFavourite(prev, item)) {
+        toast({
+          title: "Already added",
+          description: `${item.title} is already in your favourites.`,
+          status: "info",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
         return prev;
-      } else {
-        return [...prev, item];
       }
+
+      toast({
+        title: "Added to favourites",
+        description: `${item.title} has been added successfully.`,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+        position: "top-right",
+      });
+
+      return [...prev, item];
     });
   };
 
-  // create new array with elements that arent equal to the current elements id
   const removeFavourite = (idToRemove: string) => {
-    setFavourites((prev) => prev.filter((item) => item.id !== idToRemove));
+    setFavourites((prev) => {
+      const updated = prev.filter((item) => item.id !== idToRemove);
+
+      if (updated.length < prev.length) {
+        toast({
+          title: "Removed from favourites",
+          description: "Item has been removed successfully.",
+          status: "warning",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+      } else {
+        toast({
+          title: "Item not found",
+          description: "Could not find this item in your favourites.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
+
+      return updated;
+    });
   };
 
   useEffect(() => {
