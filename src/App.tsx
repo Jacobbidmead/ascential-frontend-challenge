@@ -13,7 +13,7 @@ const App: React.FC = () => (
   <FavouritesProvider>
     <Router>
       <Nav />
-      <Drawer />
+
       <Routes>
         <Route path="/" Component={Home} />
         <Route path="/venues" Component={Venues} />
@@ -26,8 +26,9 @@ const App: React.FC = () => (
 );
 
 const Nav: React.FC = () => (
-  <Flex as="nav" bg="gray.700" color="white" padding="24px">
+  <Flex as="nav" bg="gray.700" color="white" padding="24px" justify="space-between">
     <Heading size="md">Ascential Front End Challenge</Heading>
+    <Drawer />
   </Flex>
 );
 

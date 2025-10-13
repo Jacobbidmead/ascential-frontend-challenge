@@ -49,7 +49,6 @@ const Events: React.FC = () => {
     sort: "score.desc",
     per_page: "24",
   });
-  console.log("SeatGeek data:", data);
 
   if (error) return <Error />;
 
