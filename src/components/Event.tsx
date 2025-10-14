@@ -40,6 +40,7 @@ interface Performers {
   image: string;
   num_upcoming_events: number;
   genres: Genres[];
+  url: string;
 }
 
 interface Genres {
