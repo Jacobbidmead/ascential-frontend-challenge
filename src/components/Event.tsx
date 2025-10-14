@@ -51,7 +51,6 @@ const Event: React.FC = () => {
   const { eventId } = useParams();
   const { data: event, error } = useSeatGeek(`events/${eventId}`);
 
-  console.log(event);
   if (error) return <Error />;
 
   if (!event) {

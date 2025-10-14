@@ -41,9 +41,13 @@ const InfoTab: React.FC<InfoTabProps> = ({ performers }) => {
                 rel="noopener noreferrer">
                 <Image src={image} alt={name} w="100%" objectFit="contain" borderRadius="md" />
               </LinkOverlay>
-              <Heading size="sm">{num_upcoming_events} upcoming events</Heading>
 
-              <Heading size="sm">Genres</Heading>
+              {num_upcoming_events && (
+                <Heading size="sm">{num_upcoming_events} upcoming events</Heading>
+              )}
+
+              {genres && <Heading size="sm">Genres</Heading>}
+
               <Flex wrap="wrap" gap={2}>
                 {genres &&
                   genres.map((genre, i) => (
