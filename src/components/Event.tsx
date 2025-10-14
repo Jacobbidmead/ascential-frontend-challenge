@@ -13,7 +13,6 @@ import {
   Button,
   Stack,
   Tooltip,
-  Grid,
 } from "@chakra-ui/react";
 import Breadcrumbs from "./Breadcrumbs";
 import FavouritesButton from "./FavouritesButton";
