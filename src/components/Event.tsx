@@ -13,10 +13,12 @@ import {
   Button,
   Stack,
   Tooltip,
+  Grid,
 } from "@chakra-ui/react";
 import Breadcrumbs from "./Breadcrumbs";
 import FavouritesButton from "./FavouritesButton";
 import Error from "./Error";
+import InfoTab from "./InfoTab";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import { formatDateTime } from "../utils/formatDateTime";
 import { type Venue } from "./Events";
@@ -28,7 +30,21 @@ interface EventInfoProps {
     datetime_local: string;
     venue: Venue;
     url: string;
+    id: number;
+    performers: Performers[];
   };
+}
+
+interface Performers {
+  name: string;
+  image: string;
+  num_upcoming_events: number;
+  genres: Genres[];
+  url: string;
+}
+
+interface Genres {
+  name: string;
 }
 
 const Event: React.FC = () => {
@@ -96,6 +112,8 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => (
         Buy Tickets
       </Button>
     </Flex>
+    <Heading>Performer Info</Heading>
+    <InfoTab performers={event.performers} />
   </Stack>
 );
 

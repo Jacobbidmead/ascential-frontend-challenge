@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   SimpleGrid,
   Flex,
@@ -16,6 +16,7 @@ import {
 import { Link } from "react-router-dom";
 import Breadcrumbs from "./Breadcrumbs";
 import FavouritesButton from "./FavouritesButton";
+import SearchInput from "./SearchInput";
 import Error from "./Error";
 import { useSeatGeek } from "../utils/useSeatGeek";
 import { formatDateTime } from "../utils/formatDateTime";
@@ -44,10 +45,13 @@ interface EventItemProps {
 }
 
 const Events: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
+
   const { data, error } = useSeatGeek("/events", {
     type: "concert",
     sort: "score.desc",
-    per_page: "24",
+    per_page: "50",
+    ...(searchQuery && { q: searchQuery }),
   });
 
   if (error) return <Error />;
@@ -62,6 +66,8 @@ const Events: React.FC = () => {
 
   return (
     <>
+      <SearchInput placeholder="Search by event or venue..." onSearch={setSearchQuery} />
+
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Events" }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.events?.map((event: EventProps) => (
