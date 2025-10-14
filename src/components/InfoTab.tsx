@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid } from "@chakra-ui/react";
+import { SimpleGrid, Card, Image, Heading, Flex, VStack } from "@chakra-ui/react";
 
 interface Performers {
   name: string;
@@ -12,24 +12,42 @@ interface Genres {
   name: string;
 }
 interface InfoTabProps {
-  id: number;
   performers: Performers[];
 }
 
-const InfoTab: React.FC<InfoTabProps> = ({ id, performers }) => {
+const InfoTab: React.FC<InfoTabProps> = ({ performers }) => {
   return (
-    <Grid>
-      {performers.map(({ name, image, num_upcoming_events, genres }) => (
-        <Grid key={id}>
-          <div>{name}</div>
-          <img src={image} alt={name} />
-          <div>{num_upcoming_events} upcoming events</div>
-          {genres.map((genre, i) => (
-            <div>{genre.name}</div>
-          ))}
-        </Grid>
-      ))}
-    </Grid>
+    <SimpleGrid spacing="10" columns={3} minChildWidth="350px">
+      {performers &&
+        performers.map(({ name, image, num_upcoming_events, genres }, index) => (
+          <Card
+            variant="outline"
+            overflow="hidden"
+            bg="gray.50"
+            borderColor="gray.200"
+            p="4"
+            _hover={{ bg: "gray.100" }}
+            key={index}>
+            <VStack align="start" spacing={4}>
+              <Heading size="md">{name}</Heading>
+
+              <Image src={image} alt={name} w="100%" objectFit="contain" borderRadius="md" />
+
+              <Heading size="sm">{num_upcoming_events} upcoming events</Heading>
+
+              <Heading size="sm">Genres</Heading>
+              <Flex wrap="wrap" gap={2}>
+                {genres &&
+                  genres.map((genre, i) => (
+                    <Heading key={i} size="xs" px={2} py={1} bg="gray.200" borderRadius="md">
+                      {genre.name}
+                    </Heading>
+                  ))}
+              </Flex>
+            </VStack>
+          </Card>
+        ))}
+    </SimpleGrid>
   );
 };
 

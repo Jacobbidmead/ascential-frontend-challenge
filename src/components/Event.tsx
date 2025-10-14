@@ -112,7 +112,8 @@ const EventInfo: React.FC<EventInfoProps> = ({ event }) => (
         Buy Tickets
       </Button>
     </Flex>
-    <InfoTab id={event.id} performers={event.performers} />
+    <Heading>Performer Info</Heading>
+    <InfoTab performers={event.performers} />
   </Stack>
 );
 
