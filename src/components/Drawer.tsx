@@ -52,7 +52,7 @@ const SideDrawer = () => {
               <AccordionItem>
                 <AccordionButton>
                   <Heading size="sm" flex="1" textAlign="left">
-                    Venues {venueFavourites.length}
+                    Venues ({venueFavourites.length})
                   </Heading>
                   <AccordionIcon />
                 </AccordionButton>
@@ -73,7 +73,7 @@ const SideDrawer = () => {
                           aria-label="Remove favourite"
                           icon={<CloseIcon />}
                           size="xs"
-                          variant="ghost"
+                          variant="plain"
                           colorScheme="red"
                           onClick={() => removeFavourite(fav.id)}
                         />
@@ -90,7 +90,7 @@ const SideDrawer = () => {
               <AccordionItem>
                 <AccordionButton>
                   <Heading size="sm" flex="1" textAlign="left">
-                    Events {eventFavourites.length}
+                    Events ({eventFavourites.length})
                   </Heading>
                   <AccordionIcon />
                 </AccordionButton>
@@ -111,7 +111,7 @@ const SideDrawer = () => {
                           aria-label="Remove favourite"
                           icon={<CloseIcon />}
                           size="xs"
-                          variant="ghost"
+                          variant="plain"
                           colorScheme="red"
                           onClick={() => removeFavourite(fav.id)}
                         />
