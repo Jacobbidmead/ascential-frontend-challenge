@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   SimpleGrid,
@@ -17,6 +17,7 @@ import { useSeatGeek } from "../utils/useSeatGeek";
 import Error from "./Error";
 import Breadcrumbs from "./Breadcrumbs";
 import FavouritesButton from "./FavouritesButton";
+import SearchInput from "./SearchInput";
 
 export interface VenueProps {
   id: number;
@@ -31,9 +32,11 @@ interface VenueItemProps {
 }
 
 const Venues: React.FC = () => {
+  const [searchQuery, setSearchQuery] = useState<string>("");
   const { data, error } = useSeatGeek("/venues", {
     sort: "score.desc",
     per_page: "24",
+    ...(searchQuery && { q: searchQuery }),
   });
 
   if (error) return <Error />;
@@ -48,6 +51,7 @@ const Venues: React.FC = () => {
 
   return (
     <>
+      <SearchInput placeholder="Search by event or venue..." onSearch={setSearchQuery} />
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Venues" }]} />
       <SimpleGrid spacing="6" m="6" minChildWidth="350px">
         {data.venues?.map((venue: VenueProps) => (
